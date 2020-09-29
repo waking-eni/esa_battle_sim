@@ -8,7 +8,7 @@ include_once '../config/database.php';
 include_once '../objects/battle.php';
 include_once '../objects/army.php';
 
-// global battle_id
+// global last battle_id
 global $battle_id;
   
 // instantiate database and battle object
@@ -45,7 +45,7 @@ if($num>0){
         array_push($battles_arr["records"], $battle_item);
     }
 
-    // set battle_id
+    // set last battle_id
     $battle_id = $battles_arr['id'];
 
     // set response code - 200 OK
