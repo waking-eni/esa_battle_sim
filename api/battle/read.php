@@ -7,9 +7,6 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../config/database.php';
 include_once '../objects/battle.php';
 include_once '../objects/army.php';
-
-// global last battle_id
-global $battle_id;
   
 // instantiate database and battle object
 $database = new Database();
@@ -45,9 +42,6 @@ if($num>0){
         array_push($battles_arr["records"], $battle_item);
     }
 
-    // set last battle_id
-    $battle_id = $battles_arr['id'];
-
     // set response code - 200 OK
     http_response_code(200);
   
@@ -61,56 +55,5 @@ if($num>0){
     // tell the user no battles found
     echo json_encode(
         array("message" => "No battles found.")
-    );
-}
-
-/* ------------------------------------------------------- */
-
-// read all the armies battling this battle
-// initialize object
-$army = new Army($db);
-    
-// query armies
-$stmt = $army->read_from_battle_id($battle_id);
-$num = $stmt->rowCount();
-
-// check if more than 0 record found
-if($num>0){
-  
-    // armies array
-    $armies_arr=array();
-    $armies_arr["records"]=array();
-  
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
-        extract($row);
-  
-        $army_item=array(
-            "id" => $id,
-            "name" => $name,
-            "units" => $units,
-            "attack_strategy" => $attack_strategy
-        );
-  
-        array_push($armies_arr["records"], $army_item);
-    }
-  
-    // set response code - 200 OK
-    http_response_code(200);
-  
-    // show armies data in json format
-    echo json_encode($armies_arr);
-} else {
-  
-    // set response code - 404 Not found
-    http_response_code(404);
-  
-    // tell the user no armies found
-    echo json_encode(
-        array("message" => "No armies found.")
     );
 }

@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // get database connection
 include_once '../config/database.php';
   
-// instantiate product object
+// instantiate battle object
 include_once '../objects/battle.php';
   
 $database = new Database();
