@@ -2,7 +2,7 @@
 
 // decode json
 $json = file_get_contents('api/army/read.php');
-$data = json_decode($json,true);
+$data = (array)json_decode($json);
 var_dump($data);
 
 // array of armies
@@ -10,15 +10,14 @@ $armies = array();
 
 // count the number of armies and fill the armies array
 $numOfArmies = 0;
-for($i = 0; $i < sizeof($data); $i++) {
-    if($data->id)
+foreach($data as $obj) {
+    if($obj->id)
         $numOfArmies++;
     $armies[$i] = array(
-        "id" => $data->id,
-        "name" => $data->name,
-        "units" => $data->units,
-        "attack_strategy" => $data->attack_strategy,
-        "battles_id" => $data->battles_id
+        "id" => $obj->id,
+        "name" => $obj->name,
+        "units" => $obj->units,
+        "attack_strategy" => $obj->attack_strategy
     );
 }
 
@@ -41,6 +40,7 @@ if($numOfArmies >= 5) {
 
             // if there is only one army left
             if($armiesAlive == 1) {
+                echo "Done";
                 break;
             }
         }

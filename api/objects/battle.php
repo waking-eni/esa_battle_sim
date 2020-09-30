@@ -49,7 +49,8 @@ class Battle{
     
         // execute query
         if($stmt->execute()){
-            return true;
+            $last_id = $this->conn->lastInsertId();
+            return $last_id;
         }
     
         return false;

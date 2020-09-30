@@ -37,8 +37,7 @@ if($num>0){
             "id" => $id,
             "name" => $name,
             "units" => $units,
-            "attack_strategy" => $attack_strategy,
-            "battles_id" => $battles_id
+            "attack_strategy" => $attack_strategy
         );
   
         array_push($armies_arr["records"], $army_item);

@@ -19,20 +19,18 @@ $army = new Army($db);
   
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
-  
+ 
 // make sure data is not empty
 if(
     !empty($data->name) &&
     !empty($data->units) &&
-    !empty($data->attack_strategy) &&
-    !empty($data->battle_id)
+    !empty($data->attack_strategy)
 ){
   
     // set armies property values
     $army->name = $data->name;
     $army->units = $data->units;
     $army->attack_strategy = $data->attack_strategy;
-    $army->battle_id = $data->battle_id;
   
     // create the army
     if($army->create()){

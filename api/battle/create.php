@@ -17,44 +17,25 @@ $db = $database->getConnection();
   
 $battle = new Battle($db);
   
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
+// set battle property values
+$battle->status = "battle ready";
   
-// make sure data is not empty
-if(
-    !empty($data->status)
-){
+// create the battle
+if($last_id = $battle->create()){
   
-    // set battle property values
-    $battle->status = $data->status;
-  
-    // create the battle
-    if($battle->create()){
-  
-        // set response code - 201 created
-        http_response_code(201);
-  
-        // tell the user
-        echo json_encode(array("message" => "Battle was created."));
-    }
-  
-    // if unable to create the battle, tell the user
-    else{
-  
-        // set response code - 503 service unavailable
-        http_response_code(503);
-  
-        // tell the user
-        echo json_encode(array("message" => "Unable to create a battle."));
-    }
-}
-  
-// tell the user data is incomplete
-else{
-  
-    // set response code - 400 bad request
-    http_response_code(400);
+    // set response code - 201 created
+    http_response_code(201);
   
     // tell the user
-    echo json_encode(array("message" => "Unable to create a battle. Data is incomplete."));
+    echo json_encode(array("message" => "Battle " . $last_id . " was created."));
+}
+  
+// if unable to create the battle, tell the user
+else{
+  
+    // set response code - 503 service unavailable
+    http_response_code(503);
+  
+    // tell the user
+    echo json_encode(array("message" => "Unable to create a battle."));
 }
