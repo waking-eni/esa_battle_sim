@@ -4,10 +4,10 @@
       <!-- Modal content-->
       <div class="modal-content">
 
-          <form name="army_form" action="api/army/create.php" method="post" role="form">
+          <form name="army_form" id="army_form" action="api/army/create.php" method="post" role="form">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">New Army</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">                  
@@ -31,7 +31,7 @@
             </div>
 
             <div class="modal-footer">
-                <input id="submit" name="submit" type="submit" value="Ok" class="btn btn-warning">
+                <button id="submit" name="submit" type="submit" form="army_form" class="btn btn-warning">OK</button>
             </div>
 
           </form>
