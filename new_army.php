@@ -12,12 +12,12 @@
             <div class="modal-body">
                 <div class="form-group">                  
                       <label for="name">Name:</label>
-                      <input type="text" class="form-control" id="name" placeholder="Enter name">                  
+                      <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">                  
                 </div>
 
                 <div class="form-group">
                       <label for="units">Units:</label>
-                      <input type="text" class="form-control" id="units" placeholder="Enter units">
+                      <input type="text" class="form-control" id="units" name="units" placeholder="Enter units">
                 </div>
 
                 <div class="form-group">

@@ -1,4 +1,7 @@
 <?php
+
+
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -18,19 +21,30 @@ $db = $database->getConnection();
 $army = new Army($db);
   
 // get posted data
-$data = json_decode(file_get_contents("php://input"));
+$test = file_get_contents("php://input");
+
+//parse posted data make obj
+$keywords = preg_split("/[\s,=,&]+/", $test);
+$arr=array();
+for($i=0;$i<sizeof($keywords);$i++) {
+    $arr[$keywords[$i]] = $keywords[++$i];
+}
+$obj =(object)$arr;
+
  
 // make sure data is not empty
 if(
-    !empty($data->name) &&
-    !empty($data->units) &&
-    !empty($data->attack_strategy)
+    !empty($obj->name) &&
+    !empty($obj->units) &&
+    !empty($obj->attack_strategy)
 ){
   
     // set armies property values
-    $army->name = $data->name;
-    $army->units = $data->units;
-    $army->attack_strategy = $data->attack_strategy;
+    $army->name = $obj->name;
+    $army->units = $obj->units;
+    $army->attack_strategy = $obj->attack_strategy;
+	
+	
   
     // create the army
     if($army->create()){
