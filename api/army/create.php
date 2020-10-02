@@ -25,11 +25,11 @@ $test = file_get_contents("php://input");
 
 //parse posted data make obj
 $keywords = preg_split("/[\s,=,&]+/", $test);
-$arr=array();
-for($i=0;$i<sizeof($keywords);$i++) {
+$arr = array();
+for($i = 0; $i < sizeof($keywords); $i++) {
     $arr[$keywords[$i]] = $keywords[++$i];
 }
-$obj =(object)$arr;
+$obj = (object)$arr;
 
  
 // make sure data is not empty

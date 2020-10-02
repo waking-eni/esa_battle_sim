@@ -19,11 +19,11 @@ $stmt = $army->read();
 $num = $stmt->rowCount();
   
 // check if more than 0 record found
-if($num>0){
+if($num > 0){
   
     // armies array
-    $armies_arr=array();
-    $armies_arr["records"]=array();
+    $armies_arr = array();
+    $armies_arr["records"] = array();
   
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -33,7 +33,7 @@ if($num>0){
         // just $name only
         extract($row);
   
-        $army_item=array(
+        $army_item = array(
             "id" => $id,
             "name" => $name,
             "units" => $units,

@@ -1,23 +1,31 @@
 <?php
 
 // decode json
-$json = file_get_contents('api/army/read.php');
-$data = (array)json_decode($json);
+$json = file_get_contents('http://localhost/phpprojects/esa_battle_sim/api/army/read.php');
+$data = json_decode($json, true);
 var_dump($data);
+
+/*$json_errors = array(
+    JSON_ERROR_NONE => 'No error has occurred',
+    JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+    JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+    JSON_ERROR_SYNTAX => 'Syntax error',
+);
+ echo 'Last error : ', $json_errors[json_last_error()], PHP_EOL, PHP_EOL;*/
 
 // array of armies
 $armies = array();
 
 // count the number of armies and fill the armies array
 $numOfArmies = 0;
-foreach($data as $obj) {
-    if($obj->id)
+for($i = 0; $i < count($data["records"]); $i++) {
+    if($data["records"][$i]["id"])
         $numOfArmies++;
     $armies[$i] = array(
-        "id" => $obj->id,
-        "name" => $obj->name,
-        "units" => $obj->units,
-        "attack_strategy" => $obj->attack_strategy
+        "id" => $data["records"][$i]["id"],
+        "name" => $data["records"][$i]["name"],
+        "units" => $data["records"][$i]["units"],
+        "attack_strategy" => $data["records"][$i]["attack_strategy"]
     );
 }
 
@@ -40,7 +48,7 @@ if($numOfArmies >= 5) {
 
             // if there is only one army left
             if($armiesAlive == 1) {
-                echo "Done";
+                var_dump($armiesAlive);
                 break;
             }
         }
