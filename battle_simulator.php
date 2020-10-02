@@ -3,7 +3,7 @@
 // decode json
 $json = file_get_contents('http://localhost/phpprojects/esa_battle_sim/api/army/read.php');
 $data = json_decode($json, true);
-var_dump($data);
+//var_dump($data);
 
 /*$json_errors = array(
     JSON_ERROR_NONE => 'No error has occurred',
@@ -28,6 +28,8 @@ for($i = 0; $i < count($data["records"]); $i++) {
         "attack_strategy" => $data["records"][$i]["attack_strategy"]
     );
 }
+//var_dump($numOfArmies);
+//var_dump($armies);
 
 // armies still alive
 $armiesAlive = $numOfArmies;
@@ -35,9 +37,10 @@ $armiesAlive = $numOfArmies;
 // game loop
 if($numOfArmies >= 5) {
     while($armiesAlive > 1) {
-        for($i = sizeof($armies); $i >= 0; $i--) {
+        for($i = sizeof($armies) - 1; $i >= 0; $i--) {
             // call strategy and attack functions
             $attacked_id = strategy($armies[$i], $armies, $armiesAlive);
+            var_dump($attacked_id);
             $result = attack($armies[$i], $armies[$attacked_id]);
 
             // delete the army if it has no units left
@@ -82,21 +85,21 @@ function strategy($army, $armies, $armiesAlive) {
     $strongestId = 0;
     for($i = 0; $i < sizeof($armies); $i++) {
         // skip the attacker
-        if($armies['id'] == $army['id'])
+        if($armies[$i]['id'] == $army['id'])
             continue;
-        if($armies['units'] <= $weakestUnits) {
-            $weakestUnits = $armies['units'];
-            $weakestId = $armies['id'];
+        if($armies[$i]['units'] <= $weakestUnits) {
+            $weakestUnits = $armies[$i]['units'];
+            $weakestId = $armies[$i]['id'];
         }
-        if($armies['units'] >= $strongestUnits) {
-            $strongestUnits = $armies['units'];
-            $strongestId = $armies['id'];
+        if($armies[$i]['units'] >= $strongestUnits) {
+            $strongestUnits = $armies[$i]['units'];
+            $strongestId = $armies[$i]['id'];
         }
     }
 
     switch($army['attack_strategy']) {
         case "random":
-            $attackedId = rand(0, $armiesAlive);
+            $attackedId = rand(0, ($armiesAlive - 1));
             break;
         case "weakest":
             $attackedId = $weakestId;
