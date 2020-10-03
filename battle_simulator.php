@@ -24,7 +24,7 @@ for($i = 0; $i < count($data["records"]); $i++) {
     $armies[$i] = array(
         "id" => $data["records"][$i]["id"],
         "name" => $data["records"][$i]["name"],
-        "units" => $data["records"][$i]["units"],
+        "units" => $data["records"][$i]["units"] + 0,
         "attack_strategy" => $data["records"][$i]["attack_strategy"]
     );
 }
@@ -33,21 +33,24 @@ for($i = 0; $i < count($data["records"]); $i++) {
 
 // armies still alive
 $armiesAlive = $numOfArmies;
-
+var_dump($armiesAlive);
 // game loop
 if($numOfArmies >= 5) {
     while($armiesAlive > 1) {
         for($i = sizeof($armies) - 1; $i >= 0; $i--) {
             // call strategy and attack functions
             $attacked_id = strategy($armies[$i], $armies, $armiesAlive);
-            var_dump($attacked_id);
             $result = attack($armies[$i], $armies[$attacked_id]);
+            var_dump($result);
 
             // delete the army if it has no units left
-            if($result['units'] == 0) {
-                unset($result);
-                $armiesAlive--;
+            if($result != NULL) {
+                if($result['units'] == 0) {
+                    unset($result);
+                    $armiesAlive--;
+                }
             }
+            
 
             // if there is only one army left
             if($armiesAlive == 1) {
@@ -55,15 +58,22 @@ if($numOfArmies >= 5) {
                 break;
             }
         }
+        $armiesAlive--;
     }
 }
 
 // subtract damage
-function damage($army1, $army2) {
-    if($army2['units'] == 1)
+function damage(&$army1, &$army2) {
+    if($army2['units'] == 1) 
         $army2['units'] -= 1;
-    else 
-        $army2['units'] -= floor($army1['units'] * 0.5);
+    else if($army1['units'] == $army2['units']) {
+        $army1['units'] = (int)$army1['units']/2;
+        $army2['units'] = (int)$army2['units']/2;
+    }
+    else {
+        $army2['units'] -= (int)floor($army1['units'] / 2);
+        echo "did it";
+        var_dump($army2['units']);}
 }
 
 // attack and call the function to subtract damage
@@ -74,6 +84,8 @@ function attack($army1, $army2) {
     } else if($army2['units'] > $army1['units']) {
         damage($army2, $army1);
         return $army1;
+    } else {
+        damage($army1, $army2);
     }
 }
 
@@ -83,7 +95,7 @@ function strategy($army, $armies, $armiesAlive) {
     $weakestId = 0;
     $strongestUnits = 1;
     $strongestId = 0;
-    for($i = 0; $i < sizeof($armies); $i++) {
+    for($i = 0; $i < sizeof($armies) - 1; $i++) {
         // skip the attacker
         if($armies[$i]['id'] == $army['id'])
             continue;
